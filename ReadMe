@@ -1,0 +1,8 @@
+Instructions:
+1. Install all required imports
+2. Run main.py
+3. Let camera detect first face
+4. Click button 'a' when a face is detected
+5. After finish detecting faces, click button 'q' to exit detection and start recognition
+6. All recognized student attendance will be shown in the terminal and stored in attendance.txt
+7. Unknown faces will be stored in Unknown_faces folder
