@@ -38,25 +38,24 @@ def mtcnn():
         # Show the resulting frame
         cv2.imshow('Video', frame)
 
+        count = count + 1
+        filename ='./Student_collected/' + str(count) + '.png'
+
+        # Save the bounding area and the current frame
+        if boxes is not None:
+            bounding_area = boxes[0]
+            captured_frame = frame.copy()
+
+        if bounding_area is not None and captured_frame is not None:
+            x1, y1, x2, y2 = bounding_area.astype(int)
+            bounding_box = captured_frame[y1:y2, x1:x2]
+            # Save the cropped face into
+            cv2.imwrite(filename, bounding_box)
+            print('Bounding box saved to disk')
+
         # Check for key press events
         key = cv2.waitKey(1)
-        if key == ord('a'):
-            count = count + 1
-            filename ='./Student_collected/' + str(count) + '.png'
-
-            # Save the bounding area and the current frame
-            if boxes is not None:
-                bounding_area = boxes[0]
-                captured_frame = frame.copy()
-
-            if bounding_area is not None and captured_frame is not None:
-                x1, y1, x2, y2 = bounding_area.astype(int)
-                bounding_box = captured_frame[y1:y2, x1:x2]
-                #
-                cv2.imwrite(filename, bounding_box)
-                print('Bounding box saved to disk')
-
-        elif key == ord('q'):
+        if key == ord('q'):
             # Quit the program if the 'q' key is pressed
             break
 

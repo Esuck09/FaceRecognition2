@@ -9,8 +9,11 @@ def recognition():
     known_face_encodings = []
     known_face_names = []
 
-    # Create attendance file
+    # Open attendance file for append
     attendance_file = open("attendance.txt", "a")
+
+    # Open attendance file for read
+    attendance_read = open("attendance.txt", "r")
 
     for filename in os.listdir(known_faces_dir):
         image = face_recognition.load_image_file(os.path.join(known_faces_dir, filename))
@@ -40,12 +43,22 @@ def recognition():
 
             # If a match was found, print student attendance is signed
             if True in matches:
-                match_index = matches.index(True)
-                name = known_face_names[match_index]
-                # Append student names and register time into attendance text file
-                attendance_file.write(name + "," + str(image_created_time) + "\n")
-                print(f"Attendance signed for {name}")
-                os.remove(test_image_path)
+                # Read through all lines in attendance file and see if records existed
+                for line in attendance_read:
+                    field = line.strip().split(",")
+                    stud_name = field[0]
+                    # If student attendance has signed, remove image
+                    if name == stud_name:
+                        os.remove(test_image_path)
+
+                    # else sign attendance
+                    else:
+                        match_index = matches.index(True)
+                        name = known_face_names[match_index]
+                        # Append student names and register time into attendance text file
+                        attendance_file.write(name + "," + str(image_created_time) + "\n")
+                        print(f"Attendance signed for {name}")
+                        os.remove(test_image_path)
             else:
                 unknown_image_path = os.path.join(unknown_faces_dir, filename)
                 shutil.move(test_image_path, unknown_image_path)
